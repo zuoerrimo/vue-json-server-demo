@@ -6,7 +6,7 @@ module.exports=function(){
     //伪造20条关于people的数据
     people: _.times(20,function(n){
       return {
-        id: n,
+        id: n + 1,
         name: faker.name.findName(),
         avatar: faker.internet.avatar()
       }

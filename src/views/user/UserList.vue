@@ -15,7 +15,6 @@
           <el-button type="primary" @click="addUserModal.approve">确 定</el-button>
         </div>
       </el-dialog>
-  		<el-header class="table-title">userList</el-header>
   		<el-main>
         <div class="table-operation">
           <el-button type="primary" @click="showAddModal">添加</el-button>
@@ -50,19 +49,32 @@
           </template>
         </el-table-column>
       </el-table>
-      </el-main>
+        <div class="table-page">
+          <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 20, 50]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
+    </el-main>
   	</el-container>
   </div>
 </template>
 <script>
 import api from '@/api/index'
 import axios from 'axios'
-var _ = require('lodash');
 export default {
-  name: 'Login',
+  name: 'UserList',
   data () {
   	return {
   		tableData: [],
+      pageSize: 5,
+      currentPage: 1,
+      total: 0,
       addUserModal: {
         title: '',
         id: '',
@@ -75,11 +87,29 @@ export default {
   	}
   },
   methods: {
+    handleSizeChange(size) {
+      this.pageSize = size
+      this.renderTable()
+    },
+
+    handleCurrentChange(currentPage) {
+      this.currentPage = currentPage
+      this.renderTable()
+    },
+
   	renderTable () {
-      axios(api.userList).then(data => {
+      let config = _.cloneDeep(api.userList)
+      config.url = config.url + `?_page=${this.currentPage}&_limit=${this.pageSize}`
+      axios(config).then(data => {
         this.tableData = data.data
       })
   	},
+    getTotal () {
+      let config = api.userList
+      axios(config).then(data => {
+        this.total = data.data.length
+      })
+    },
 
     addUser() {
       let maxId = _.maxBy(this.tableData, 'id')
@@ -137,6 +167,7 @@ export default {
     },
   },
   mounted(){
+    this.getTotal()
     this.renderTable()
   }
 }
@@ -159,5 +190,10 @@ export default {
     width:  100%;
     text-align:  right;
     margin-bottom: 10px;
+  }
+  .table-page {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
   }
 </style>

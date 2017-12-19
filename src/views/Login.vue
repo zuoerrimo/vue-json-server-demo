@@ -36,7 +36,7 @@ export default {
   	login () {
       this.$store.commit(types.LOGIN, this.password)
       this.$router.push({
-        path: 'userList'
+        path: 'index'
       })
     }
   },

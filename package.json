@@ -11,8 +11,8 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "mock": "json-server mock/mock.js --port 9090",
-    "mockdev": "npm run mock & npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "mockDev": "npm run start && npm run mock"
   },
   "dependencies": {
     "axios": "^0.17.1",
