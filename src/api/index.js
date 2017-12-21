@@ -4,7 +4,7 @@ export default {
      method: 'get',
     },
     addUser: {
-     url: '/people',
+     url: '/people', 
      method: 'post',
     },
 }

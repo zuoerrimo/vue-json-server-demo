@@ -122,6 +122,7 @@ export default {
 
       }) 
       axios(configData).then(data => {
+        this.getTotal()
         this.renderTable()
       })
       this.addUserModal.show = false
@@ -162,6 +163,7 @@ export default {
         method: 'delete',
       }
       axios(configData).then(data => {
+        this.getTotal()
         this.renderTable()
       })
     },
